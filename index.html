@@ -1,111 +1,203 @@
-<!doctype html>
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAKIB Web Page</title>
+    <title>Age Counting</title>
     <style>
-      html, body {
-          font-family: Arial, sans-serif;
-          background-color: #f0f0f0;
-          margin: 0;
-          padding: 0;
-          display: flex;
-          flex-direction: column;
-          min-height: 100vh;
-      }
-
-      #img-div {
-        background-color: black;
-        height: 300px;
-        border: 5px solid skyblue;
-        border-radius: 50px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-
-      #links-div {
-        padding: 20px;
-        background: linear-gradient(45deg, #ff6b6b, #f06595);
-        width: 90%;
-        max-width: 600px;
-        margin: 20px auto;
-        border: 2px solid #f8c291;
-        border-radius: 40px;
-        box-sizing: border-box;
-      }
-
-      .link-item {
-        display: block;
-        text-decoration: none;
-        text-shadow: 0 0.1px 0 black;
-        font-size: 20px;
-        margin: 10px 0;
-      }
-
-      img {
-        display: block;
-        margin: 0 auto;
-        width: 40%;
-        padding: 20px;
-        height: auto;
-        border-radius: 50%;
-      }
-
-      h1 {
-        color: white;
-        text-align: center;
-        font-family: bolder;
-      }
-
-      #custom-text {
-        background-color: #f8c291;
-        padding: 20px;
-        margin: 20px auto;
-        width: 90%;
-        max-width: 600px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-      }
-
-      footer {
-        padding: 40px; /* Increased padding for larger footer */
-        background-color: black;
-        color: white;
-        text-align: center;
-        font-size: 18px; /* Increased font size for better visibility */
-        width: 100%;
-        box-sizing: border-box;
-        position: relative;
-        margin-top: auto; /* Ensure footer stays at the bottom */
-      }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        input {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
     </style>
-  </head>
-  <body>
-    <div id="img-div">
-      <img src="pp.png" alt="pp">
-      <h1>Welcome to Rakib Shop</h1>
+</head>
+<body>
+    <h1>বয়স কাউন্টিং</h1>
+    <div class="container">
+        <button onclick="showCalculator('age')">বয়স কাউন্ট করুন</button>
+        <button onclick="showCalculator('marriage')">বিয়ের বয়স যাচাই করুন</button>
+
+        <div id="ageCalculator" style="display:none;">
+            <h2>বয়স কাউন্ট করুন</h2>
+            <input type="number" id="birthYearInput" placeholder="বছর" min="1900" max="2100">
+            <input type="number" id="birthMonthInput" placeholder="মাস" min="1" max="12">
+            <input type="number" id="birthDayInput" placeholder="দিন" min="1" max="31">
+            <button onclick="calculateAge()">ফলাফল দেখুন</button>
+            <div id="ageResult" class="result"></div>
+        </div>
+
+        <div id="marriageCalculator" style="display:none;">
+            <h2>আপনার বয়স প্রদান করুন</h2>
+            <input type="number" id="marriageYearInput" placeholder="বছর" min="1900" max="2100">
+            <input type="number" id="marriageMonthInput" placeholder="মাস" min="1" max="12">
+            <input type="number" id="marriageDayInput" placeholder="দিন" min="1" max="31">
+            <button onclick="calculateMarriage()">ফলাফল দেখুন</button>
+            <div id="marriageResult" class="result"></div>
+        </div>
     </div>
-    
-    <div id="links-div">
-      <a href="./list.html" class="link-item">★ টপআপ করুন</a>
-      <a href="./popup.html" class="link-item">★ গেম খেলতে চাইলে মেসেজ দিন</a>
-      <a href="./popup.html" class="link-item">★ প্রিমিয়াম এপস ডাউনলোড করুন</a>
-      <a href="./popup.html" class="link-item">★ টিক টক এ ফলো করুন</a>
-      <a href="./popup.html" class="link-item">★ singing group Join Request</a>
-    </div>
-    
-    <div id="custom-text">
-      <p>আমাদের সাইট এ আসার জন্য আপনাকে অনেক ধন্যবাদ, দয়া করে মিথ্যা তথ্য দিবেন না,মিথ্যা তথ্য দিলে তার আর টপআপ হবে না, অযথা মেসেজ দিবেন সময় নষ্ট করবেন না। </p>
-    </div>
-    
-    <footer>
-      <div id="cpy">
-        <p>©opyright by Rakib YT</p>
-      </div>
-    </footer>
-  </body>
+<h4>Rakib Yt</h4>
+    <script>
+      let ageInterval = null;
+
+function showCalculator(type) {
+  document.getElementById('ageCalculator').style.display = type === 'age' ? 'block' : 'none';
+  document.getElementById('marriageCalculator').style.display = type === 'marriage' ? 'block' : 'none';
+  document.getElementById('ageResult').innerHTML = '';
+  document.getElementById('marriageResult').innerHTML = '';
+
+  // Clear previous interval if exists
+  if (ageInterval) {
+    clearInterval(ageInterval);
+    ageInterval = null;
+  }
+}
+
+function calculateAge() {
+  const birthYear = parseInt(document.getElementById('birthYearInput').value, 10);
+  const birthMonth = parseInt(document.getElementById('birthMonthInput').value, 10) - 1; // 0-based index
+  const birthDay = parseInt(document.getElementById('birthDayInput').value, 10);
+
+  if (isNaN(birthYear) || isNaN(birthMonth) || isNaN(birthDay)) {
+    document.getElementById('ageResult').innerText = 'সঠিক তথ্য প্রদান করুন।';
+    return;
+  }
+
+  const birthDate = new Date(birthYear, birthMonth, birthDay);
+
+  // Clear any previous interval if exists
+  if (ageInterval) {
+    clearInterval(ageInterval);
+  }
+
+  // Start a new interval to update the age live
+  ageInterval = setInterval(() => {
+    const now = new Date();
+    const ageInMilliseconds = now - birthDate;
+
+    let ageYears = now.getFullYear() - birthDate.getFullYear();
+    let ageMonths = now.getMonth() - birthDate.getMonth();
+    let ageDays = now.getDate() - birthDate.getDate();
+
+    if (ageDays < 0) {
+      ageMonths--;
+      const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, birthDate.getDate());
+      ageDays += (new Date(now.getFullYear(), now.getMonth(), 0).getDate() - lastMonth.getDate() + 1);
+    }
+
+    if (ageMonths < 0) {
+      ageYears--;
+      ageMonths += 12;
+    }
+
+    const totalDays = Math.floor(ageInMilliseconds / (1000 * 60 * 60 * 24));
+    const totalWeeks = Math.floor(totalDays / 7);
+    const totalMonths = ((now.getFullYear() - birthDate.getFullYear()) * 12) + now.getMonth() - birthDate.getMonth();
+    const totalHours = Math.floor(ageInMilliseconds / (1000 * 60 * 60));
+    const totalMinutes = Math.floor(ageInMilliseconds / (1000 * 60));
+    const totalSeconds = Math.floor(ageInMilliseconds / 1000);
+
+    document.getElementById('ageResult').innerHTML = `
+      বয়স: ${ageYears} বছর, ${ageMonths} মাস, ${ageDays} দিন<br>
+      ${ageYears} বছর<br>
+      ${totalMonths} মাস<br>
+      ${totalWeeks} সপ্তাহ<br>
+      ${totalDays} দিন<br>
+      ${totalHours} ঘণ্টা<br>
+      ${totalMinutes} মিনিট<br>
+      ${totalSeconds} সেকেন্ড
+    `;
+  }, 1000); // Update every second
+}
+
+function calculateMarriage() {
+  const birthYear = parseInt(document.getElementById('marriageYearInput').value, 10);
+  const birthMonth = parseInt(document.getElementById('marriageMonthInput').value, 10);
+  const birthDay = parseInt(document.getElementById('marriageDayInput').value, 10);
+
+  if (isNaN(birthYear) || isNaN(birthMonth) || isNaN(birthDay)) {
+    document.getElementById('marriageResult').innerText = 'সঠিক তথ্য প্রদান করুন।';
+    return;
+  }
+
+  const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
+  const now = new Date();
+  let ageInYears = now.getFullYear() - birthDate.getFullYear();
+  if (now.getMonth() < birthDate.getMonth() || (now.getMonth() === birthDate.getMonth() && now.getDate() < birthDate.getDate())) {
+    ageInYears--;
+  }
+
+  if (ageInYears < 18) {
+    document.getElementById('marriageResult').innerText = 'দেখো তুমি এখনো পিচ্চি আছো, আগে বড় হও তার পর নিয়ের চিন্তা কইরো';
+    return;
+  }
+
+  if (ageInYears > 30) {
+    document.getElementById('marriageResult').innerText = 'আংকেল আপনার বয়স অনেক বেশি, একটা কাজ করেন আপনার মতোন একটা আন্টি খুঁজে বিয়ে টা করে নেন এগুলো এপ চালানো লাগবে না ';
+    return;
+  }
+
+  const birthDateString = birthDate.toDateString();
+  const storedMarriageDate = localStorage.getItem(birthDateString);
+
+  if (storedMarriageDate) {
+    document.getElementById('marriageResult').innerHTML = `
+             <br>
+            এটাই তোর বিয়ের সঠিক বয়স 🤭<br>
+              চেন্জ করে লাভ নাই 😏:<br> ${storedMarriageDate} 
+        `;
+    return;
+  }
+
+  const minMarriageAge = 18;
+  const maxMarriageAge = 35;
+
+  const minMarriageDate = new Date(birthDate);
+  minMarriageDate.setFullYear(minMarriageDate.getFullYear() + minMarriageAge);
+
+  const maxMarriageDate = new Date(birthDate);
+  maxMarriageDate.setFullYear(maxMarriageDate.getFullYear() + maxMarriageAge);
+
+  const randomMarriageDate = new Date(minMarriageDate.getTime() + Math.random() * (maxMarriageDate.getTime() - minMarriageDate.getTime()));
+  const formattedMarriageDate = randomMarriageDate.toDateString();
+
+  const ageOnMarriageDate = new Date(randomMarriageDate - birthDate);
+  const ageYearsOnMarriageDate = Math.floor(ageOnMarriageDate / (1000 * 60 * 60 * 24 * 365.25));
+  const ageMonthsOnMarriageDate = Math.floor((ageOnMarriageDate % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30));
+  const ageDaysOnMarriageDate = Math.floor(((ageOnMarriageDate % (1000 * 60 * 60 * 24 * 365.25)) % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+
+  localStorage.setItem(birthDateString, formattedMarriageDate);
+
+  document.getElementById('marriageResult').innerHTML = `
+        অভিনন্দন! আপনার বিয়ের বয়স: <br> ${formattedMarriageDate}<br>
+        সেই তারিখে আপনার সঠিক বয়স হবে: <br> ${ageYearsOnMarriageDate} বছর, ${ageMonthsOnMarriageDate} মাস, ${ageDaysOnMarriageDate} দিন
+    `;
+}
+    </script>
+</body>
 </html>
